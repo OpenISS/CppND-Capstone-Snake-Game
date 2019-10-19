@@ -13,11 +13,20 @@ find_package(NuiTrack REQUIRED)
 find_package(OpenISS REQUIRED)
 # 
 include_directories(${SDL2_INCLUDE_DIRS} src)
-include_directories(${SDL2_INCLUDE_DIRS} src)
+include_directories(${NUITRACK_INCLUDE_DIR} src)
+include_directories(${OPENISS_INCLUDE_DIRS} src)
 # 
 add_executable(SnakeGame src/main.cpp src/game.cpp src/controller.cpp src/renderer.cpp src/snake.cpp)
 # 
 string(STRIP ${SDL2_LIBRARIES} SDL2_LIBRARIES)
 # 
-target_link_libraries(SnakeGame ${SDL2_LIBRARIES})
-target_link_libraries(SnakeGame ${OPENISS_LIBRARIES})
+if(OPENISS_FOUND)
+	target_link_libraries(SnakeGame ${SDL2_LIBRARIES})
+	target_link_libraries(SnakeGame ${OPENNI2_LIBRARIES})
+	target_link_libraries(SnakeGame ${NUITRACK_LIBRARY})
+	target_link_libraries(SnakeGame ${MIDDLEWARE_LIBRARY})
+	target_link_libraries(SnakeGame ${NITE2_LIBRARIES})
+	target_link_libraries(SnakeGame ${OPENISS_LIBRARIES})
+else()
+	message("OpenISS not found!")
+endif()
