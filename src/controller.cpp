@@ -9,6 +9,38 @@ void Controller::ChangeDirection(Snake &snake, Snake::Direction input,
   return;
 }
 
+void Controller::GetGestures() {
+  gesture_tracker->init();
+  gesture_tracker->startGestureDetection();
+  this->gestures = gesture_tracker->getGestures();
+}
+
+void Controller::HandleGestureInput(bool &running, Snake &snake) const {
+  gesture_tracker->update();
+  //
+  for(auto gesture : gestures)
+  {
+    switch(gesture){
+      case GESTURE_SWIPE_UP:
+        ChangeDirection(snake, Snake::Direction::kUp,
+                            Snake::Direction::kDown);
+        break;
+      case GESTURE_SWIPE_DOWN:
+        ChangeDirection(snake, Snake::Direction::kDown,
+                            Snake::Direction::kUp);
+        break;
+      case GESTURE_SWIPE_LEFT:
+        ChangeDirection(snake, Snake::Direction::kLeft,
+                          Snake::Direction::kRight);
+        break;
+      case GESTURE_SWIPE_RIGHT:
+        ChangeDirection(snake, Snake::Direction::kRight,
+                          Snake::Direction::kLeft);
+        break;
+    }
+  }
+}
+
 void Controller::HandleInput(bool &running, Snake &snake) const {
   SDL_Event e;
   while (SDL_PollEvent(&e)) {
