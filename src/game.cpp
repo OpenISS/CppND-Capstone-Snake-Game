@@ -8,6 +8,13 @@ Game::Game(std::size_t grid_width, std::size_t grid_height)
       random_w(0, static_cast<int>(grid_width)),
       random_h(0, static_cast<int>(grid_height)) {
   PlaceFood();
+  gesture_tracker->init();
+  gesture_tracker->startGestureDetection();
+}
+
+Game::~Game()
+{
+  delete gesture_tracker;
 }
 
 void Game::Run(Controller const &controller, Renderer &renderer,
@@ -23,9 +30,8 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     frame_start = SDL_GetTicks();
 
     // Input, Update, Render - the main game loop.
-    controller.GetGestures();
     // controller.HandleInput(running, snake);
-    controller.HandleGestureInput(running, snake);
+    controller.HandleGestureInput(running, snake, gesture_tracker);
     Update();
     renderer.Render(snake, food);
 

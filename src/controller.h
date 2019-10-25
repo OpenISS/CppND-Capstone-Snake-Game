@@ -8,14 +8,11 @@
 class Controller {
  public:
   void HandleInput(bool &running, Snake &snake) const;
-  void HandleGestureInput(bool &running, Snake &snake) const;
+  void HandleGestureInput(bool &running, Snake &snake, openiss::OIGestureTracker* gesture_tracker) const;
 
  private:
   void ChangeDirection(Snake &snake, Snake::Direction input,
                        Snake::Direction opposite) const;
-  void GetGestures();
-  OIGestureTracker* gesture_tracker = new OINuiTrackGestureTracker();
-  static std::vector<openiss::OIGestureData> gestures;
 };
 
 #endif

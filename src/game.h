@@ -7,9 +7,12 @@
 #include "renderer.h"
 #include "snake.h"
 
+using namespace openiss;
+
 class Game {
  public:
   Game(std::size_t grid_width, std::size_t grid_height);
+  ~Game();
   void Run(Controller const &controller, Renderer &renderer,
            std::size_t target_frame_duration);
   int GetScore() const;
@@ -18,7 +21,7 @@ class Game {
  private:
   Snake snake;
   SDL_Point food;
-
+  OIGestureTracker* gesture_tracker = new OINuiTrackGestureTracker();
   std::random_device dev;
   std::mt19937 engine;
   std::uniform_int_distribution<int> random_w;
